@@ -8,7 +8,7 @@ import {
 export default defineConfig({
   title: "x-anything",
   description: "初试自建组件库",
-  base: "/x-ui/",
+  base: "/x-anything/",
   appearance: false,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
