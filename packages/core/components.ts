@@ -7,6 +7,7 @@ import {
   XCollapseItem,
   XAlert,
   XTooltip,
+  XFullScreenContainer
 } from '@x-anything/components'
 import type { Plugin } from 'vue'
 
@@ -18,5 +19,6 @@ export default [
   XCollapse,
   XCollapseItem,
   XAlert,
-  XTooltip
+  XTooltip,
+  XFullScreenContainer
 ] as Plugin[]

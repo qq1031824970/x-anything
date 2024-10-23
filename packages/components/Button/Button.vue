@@ -39,9 +39,6 @@ defineExpose<ButtonInstance>({
   size,
   type,
 })
-
-console.log('测试lerna');
-
 </script>
 
 <template>

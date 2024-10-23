@@ -41,6 +41,13 @@ export default defineConfig({
           { text: "Tooltip 文字提示", link: "components/tooltip" },
         ],
       },
+      {
+        text: "大屏组件",
+        collapsed: false,
+        items: [
+          { text: "全屏容器", link: "components/fullScreenContainer" },
+        ],
+      }
     ],
 
     socialLinks: [

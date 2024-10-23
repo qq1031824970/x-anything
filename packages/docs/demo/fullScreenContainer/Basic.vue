@@ -5,12 +5,15 @@ const fullScreenContainer = ref()
 </script>
 
 <template>
-  <x-fullScreenContainer ref="fullScreenContainer">
-    <template #default="{ enter }">
-      <x-tooltip content="22222222222222"> 2222 </x-tooltip>
+  <x-fullScreenContainer
+    ref="fullScreenContainer"
+    style="background-color: #fff"
+  >
+    <template #default="{ enter, exit }">
       <button @click="fullScreenContainer?.enter">全屏</button>
       <button @click="fullScreenContainer?.exit">退出全屏</button>
       <button @click="enter">全屏（插槽）</button>
+      <button @click="exit">退出全屏（插槽）</button>
     </template>
   </x-fullScreenContainer>
 </template>
