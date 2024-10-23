@@ -38,6 +38,7 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Alert 提示", link: "components/alert" },
+          { text: "Tooltip 文字提示", link: "components/tooltip" },
         ],
       },
     ],
