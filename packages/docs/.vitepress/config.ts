@@ -47,6 +47,14 @@ export default defineConfig({
         items: [
           { text: "全屏容器", link: "components/fullScreenContainer" },
         ],
+      },
+      {
+        text: "hooks",
+        collapsed: false,
+        items: [
+          { text: "useEventListener", link: "hooks/useEventListener" },
+          { text: "useClickOutside", link: "hooks/useClickOutside" },
+        ],
       }
     ],
 
