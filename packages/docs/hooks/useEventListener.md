@@ -5,6 +5,10 @@ description: useEventListener hooks文档
 next:
   link: /hooks/useClickOutside
   text: useClickOutside 外部点击
+
+prev:
+  link: /components/fullScreenContainer
+  text: FullScreenContainer 全屏容器
 ---
 
 # useEventListener 事件监听

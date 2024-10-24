@@ -45,15 +45,16 @@ export default defineConfig({
         text: "大屏组件",
         collapsed: false,
         items: [
-          { text: "全屏容器", link: "components/fullScreenContainer" },
+          { text: "FullScreenContainer 全屏容器", link: "components/fullScreenContainer" },
         ],
       },
       {
         text: "hooks",
         collapsed: false,
         items: [
-          { text: "useEventListener", link: "hooks/useEventListener" },
-          { text: "useClickOutside", link: "hooks/useClickOutside" },
+          { text: "useEventListener 事件监听", link: "hooks/useEventListener" },
+          { text: "useClickOutside 外部点击", link: "hooks/useClickOutside" },
+          { text: "useBetterReq 更好的请求", link: "hooks/useBetterReq" },
         ],
       }
     ],

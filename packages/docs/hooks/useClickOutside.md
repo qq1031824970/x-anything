@@ -4,7 +4,11 @@ description: useClickOutside hooks文档
 
 prev:
   link: /hooks/useEventListener
-  text: 事件监听
+  text: useEventListener 事件监听
+
+next:
+  link: /hooks/useBetterReq
+  text: useBetterReq 更好的请求
 ---
 
 # useClickOutside 外部点击

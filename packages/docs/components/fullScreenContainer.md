@@ -1,6 +1,14 @@
 ---
 title: FullScreenContainer
 description: FullScreenContainer 组件文档
+
+prev:
+  link: /components/tooltip
+  text: Tooltip 文字提示
+
+next:
+  link: /hooks/useEventListener
+  text: useEventListener 事件监听
 ---
 
 # FullScreenContainer 全屏容器

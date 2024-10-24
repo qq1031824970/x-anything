@@ -12,7 +12,6 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   const error = ref(false)
   let activeRequests = 0
   let controller: AbortController | void
-  let timer: NodeJS.Timeout | void
 
   const _getData = async (manual: boolean, ...args: any[]) => {
     if (delPending) {
@@ -25,10 +24,9 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
     manual && (loading.value = true)
     error.value = false
     try {
-      timer && clearInterval(timer)
       const res = await cb(...args, controller)
       if (interval) {
-        timer = setInterval(() => {
+        setTimeout(() => {
           _getData(false, ...args)
         }, interval);
       }
@@ -64,7 +62,6 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   }
 
   onBeforeUnmount(() => {
-    timer && clearInterval(timer);
     controller && controller.abort('ERR_CANCELED');
   });
 

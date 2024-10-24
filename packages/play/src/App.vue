@@ -9,6 +9,9 @@ const { getData, loading, error } = useBetterReq(
     const response = await fetch('http://jsonplaceholder.typicode.com/posts', {
       signal: controller.signal,
     })
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
     const data = await response.json()
     console.log(data)
   },
