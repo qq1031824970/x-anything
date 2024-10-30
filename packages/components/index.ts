@@ -5,3 +5,5 @@ export * from './Collapse';
 export * from './Alert';
 export * from './Tooltip';
 export * from './FullScreenContainer';
+export * from './ErrorContainer';
+export * from './Loading';

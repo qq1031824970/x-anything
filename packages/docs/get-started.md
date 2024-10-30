@@ -5,7 +5,7 @@ next:
   text: Button 按钮
 ---
 
-# 最新 Vue3 + TS 高仿 ElementPlus 打造自己的组件库
+# 快速开始
 
 ## 安装
 
@@ -36,7 +36,7 @@ createApp(App).use(XAnything).mount('#app')
 
 **单个导入**
 
-Eric-UI 提供了基于 ES Module 的开箱即用的 Tree Shaking 功能。
+x-anything 提供了基于 ES Module 的开箱即用的 Tree Shaking 功能。
 
 ```vue
 <template>
@@ -49,9 +49,6 @@ export default {
 }
 </script>
 ```
-
-::: api-table src=components/Button/types.ts
-:::
 
 ## 亮点
 

@@ -38,7 +38,9 @@ export default defineConfig({
         collapsed: false,
         items: [
           { text: "Alert 提示", link: "components/alert" },
+          { text: "Loading 加载", link: "components/loading" },
           { text: "Tooltip 文字提示", link: "components/tooltip" },
+          { text: "ErrorContainer 错误容器", link: "components/errorContainer" },
         ],
       },
       {

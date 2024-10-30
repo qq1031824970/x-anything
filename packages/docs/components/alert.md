@@ -7,8 +7,8 @@ next:
   text: Loading 加载
 
 prev:
-  link: /components/dropdown
-  text: Dropdown 下拉菜单
+  link: /components/collapse
+  text: Collapse 折叠面板
 ---
 
 # Alert 提示

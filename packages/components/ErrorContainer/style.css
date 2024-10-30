@@ -1,0 +1,27 @@
+.x-content-wrap {
+  position: relative;
+}
+
+.x-content__error {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.x-button.x-content__error__retry {
+  width: 80%;
+  &:hover,
+  &:focus {
+    background-color: var(--x-button-bg-color);
+    color: var(--x-button-text-color);
+  }
+}

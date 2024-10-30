@@ -12,6 +12,7 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   const error = ref(false)
   let activeRequests = 0
   let controller: AbortController | void
+  let timer: ReturnType<typeof setTimeout>;
 
   const _getData = async (manual: boolean, ...args: any[]) => {
     if (delPending) {
@@ -26,7 +27,7 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
     try {
       const res = await cb(...args, controller)
       if (interval) {
-        setTimeout(() => {
+        timer = setTimeout(() => {
           _getData(false, ...args)
         }, interval);
       }
@@ -52,6 +53,7 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   }
 
   const getData = (...args: any[]) => {
+    timer && clearTimeout(timer)
     retryCount = originRetryCount || 0
 
     if (args[0] instanceof MouseEvent) {
@@ -62,6 +64,7 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   }
 
   onBeforeUnmount(() => {
+    timer && clearTimeout(timer)
     controller && controller.abort('ERR_CANCELED');
   });
 

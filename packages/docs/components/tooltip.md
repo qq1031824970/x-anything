@@ -3,12 +3,12 @@ title: Tooltip
 description: Tooltip 组件文档
 
 next:
-  link: /components/form
-  text: Form 表单
+  link: /components/fullScreenContainer
+  text: FullScreenContainer 全屏容器
 
 prev:
-  link: /components/popconfirm
-  text: Popconfirm 气泡确认框
+  link: /components/loading
+  text: Loading 加载
 ---
 
 # Tooltip 文字提示

@@ -3,8 +3,8 @@ title: FullScreenContainer
 description: FullScreenContainer 组件文档
 
 prev:
-  link: /components/tooltip
-  text: Tooltip 文字提示
+  link: /components/fullScreenContainer
+  text: ErrorContainer 错误容器
 
 next:
   link: /hooks/useEventListener
