@@ -24,6 +24,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@ag-grid-community/client-side-row-model": "^32.3.2",
+    "@ag-grid-community/styles": "^32.3.2",
+    "@ag-grid-community/vue3": "^32.3.2",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",

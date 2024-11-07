@@ -57,6 +57,7 @@ export default defineConfig({
           { text: "useEventListener 事件监听", link: "hooks/useEventListener" },
           { text: "useClickOutside 外部点击", link: "hooks/useClickOutside" },
           { text: "useBetterReq 更好的请求", link: "hooks/useBetterReq" },
+          { text: "useAggrid ag-grid 工具", link: "hooks/useAggrid" },
         ],
       }
     ],

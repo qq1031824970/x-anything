@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { ButtonGroupProps } from './types'
 import { provide, reactive, toRef } from 'vue'
-import { BUTTON_GROUP_CTX_KEY } from './contants'
+import { BUTTON_GROUP_CTX_KEY } from './constants'
 
 defineOptions({
   name: 'XButtonGroup',

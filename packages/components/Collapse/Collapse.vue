@@ -2,7 +2,7 @@
 import type { CollapseProps, CollapseEmits, CollapseItemName } from './types'
 import { ref, provide, watch, watchEffect } from 'vue'
 import { debugWarn } from '@x-anything/utils'
-import { COLLAPSE_CTX_KEY } from './contants'
+import { COLLAPSE_CTX_KEY } from './constants'
 
 const COMP_NAME = 'XCollapse' as const
 

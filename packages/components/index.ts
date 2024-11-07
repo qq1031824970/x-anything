@@ -7,3 +7,4 @@ export * from './Tooltip';
 export * from './FullScreenContainer';
 export * from './ErrorContainer';
 export * from './Loading';
+export * from './Grid';
