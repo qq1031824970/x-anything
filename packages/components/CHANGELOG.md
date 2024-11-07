@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://github.com/qq1031824970/x-anything/compare/v0.0.3...v0.0.4) (2024-11-07)
+
+### ✨ Features | 新功能
+
+* useAggrid ([aef7745](https://github.com/qq1031824970/x-anything/commit/aef774509fc60ea322a82e1c350b331ebd80efa9))by.@xyl
+
 ## [0.0.3](https://github.com/qq1031824970/x-anything/compare/v0.0.2...v0.0.3) (2024-10-30)
 
 ### ✨ Features | 新功能
