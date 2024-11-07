@@ -9,7 +9,8 @@ import {
   XTooltip,
   XFullScreenContainer,
   XErrorContainer,
-  XLoading
+  XLoading,
+  XPopconfirm
 } from '@x-anything/components'
 import type { Plugin } from 'vue'
 
@@ -24,5 +25,6 @@ export default [
   XTooltip,
   XFullScreenContainer,
   XErrorContainer,
-  XLoading
+  XLoading,
+  XPopconfirm
 ] as Plugin[]

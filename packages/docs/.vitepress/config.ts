@@ -40,6 +40,7 @@ export default defineConfig({
           { text: "Alert 提示", link: "components/alert" },
           { text: "Loading 加载", link: "components/loading" },
           { text: "Tooltip 文字提示", link: "components/tooltip" },
+          { text: "Popconfirm 气泡确认框", link: "components/popconfirm" },
           { text: "ErrorContainer 错误容器", link: "components/errorContainer" },
         ],
       },

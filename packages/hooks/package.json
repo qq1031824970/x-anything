@@ -22,5 +22,6 @@
   "peerDependencies": {
     "lodash-es": "^4.17.21",
     "vue": "^3.4.29"
-  }
+  },
+  "gitHead": "d84fd8a5c0c3771ba08f0878181e688bba0e6d54"
 }

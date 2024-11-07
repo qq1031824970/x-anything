@@ -1,33 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useBetterReq } from '@x-anything/hooks'
-import { XLoading } from 'x-anything'
-
-// const fullScreenContainer = ref()
-
-const {
-  getData,
-  loading: reqLoading,
-  error,
-} = useBetterReq(
-  async (controller) => {
-    const response = await fetch('https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', {
-      signal: controller.signal,
-    })
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
-    const data = await response.json()
-    console.log(data)
-  },
-  {
-    delPending: true,
-    // retryCount: 2,
-    // interval: 3000,
-  }
-)
-
-getData()
+import { XLoading, XPopconfirm } from 'x-anything'
 
 // Loading
 const loading = ref(false)
@@ -50,6 +24,36 @@ function openLoading2() {
     _loading.close()
   }, 2000)
 }
+
+// Popconfirm
+const confirm = () => console.log('confirm')
+const cancel = () => console.log('cancel')
+
+// ErrorContainer
+
+const {
+  getData,
+  loading: errorContainerLoading,
+  error,
+} = useBetterReq(
+  async (controller) => {
+    const response = await fetch('https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', {
+      signal: controller.signal,
+    })
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+    const data = await response.json()
+    console.log(data)
+  },
+  {
+    delPending: true,
+    // retryCount: 2,
+    // interval: 3000,
+  }
+)
+
+getData()
 </script>
 
 <template>
@@ -64,12 +68,6 @@ function openLoading2() {
     </template>
   </x-fullScreenContainer> -->
 
-  <div class="box">
-    <x-errorContainer :loading="true" :error="error" :retryFn="getData">
-      <div class="container">内容</div>
-    </x-errorContainer>
-  </div>
-
   <x-button
     v-loading.fullscreen.lock="loading"
     type="primary"
@@ -78,16 +76,34 @@ function openLoading2() {
     As a directive
   </x-button>
   <x-button type="primary" @click="openLoading2"> As a service </x-button>
+
+  <br />
+  <br />
+  <!-- Popconfirm -->
+  <x-popconfirm title="确认删除吗？" @confirm="confirm" @cancel="cancel">
+    <x-button type="primary"> Popconfirm </x-button>
+  </x-popconfirm>
+
+  <br />
+  <br />
+  <!-- ErrorContainer -->
+  <div class="error-container">
+    <x-error-container
+      :loading="errorContainerLoading"
+      :error="error"
+      :retryFn="getData"
+    >
+      <div class="container">内容</div>
+    </x-error-container>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.box {
+.error-container {
   width: 400px;
   background-color: plum;
-  margin-left: 100px;
-  margin-top: 100px;
-}
-.container {
-  height: 200px;
+  .container {
+    height: 200px;
+  }
 }
 </style>

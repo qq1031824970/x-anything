@@ -8,3 +8,4 @@ export * from './FullScreenContainer';
 export * from './ErrorContainer';
 export * from './Loading';
 export * from './Grid';
+export * from './Popconfirm';
