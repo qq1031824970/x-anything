@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted, type Ref } from 'vue'
-import { useEventListener } from '../hooks'
+import useEventListener from './useEventListener'
 
 interface UseVxeTableParams {
   sticky?: boolean
