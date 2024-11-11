@@ -4,7 +4,7 @@ import { AgGridVue } from '@ag-grid-community/vue3'
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model'
 import '@ag-grid-community/styles/ag-grid.css'
 import '@ag-grid-community/styles/ag-theme-alpine.css'
-import { useAggrid } from '@x-anything/hooks'
+import { useAgGrid } from '@x-anything/hooks'
 const modules = [ClientSideRowModelModule]
 
 const rowData = ref<any[]>([])
@@ -35,7 +35,7 @@ setTimeout(() => {
   ]
 }, 100)
 
-const { gridReady, firstDataRendered } = useAggrid({
+const { gridReady, firstDataRendered } = useAgGrid({
   fitCellContents: true,
   maxWidth: 150,
   breakpoint: 400,

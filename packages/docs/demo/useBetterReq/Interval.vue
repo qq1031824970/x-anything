@@ -3,7 +3,7 @@ import { useBetterReq } from '@x-anything/hooks'
 
 const { getData, loading, error } = useBetterReq(
   async () => {
-    const response = await fetch('http://jsonplaceholder.typicode.com/posts')
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts')
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }

@@ -1,6 +1,6 @@
 import { onActivated } from 'vue'
 
-interface UseAggridParams {
+interface useAgGridParams {
   fitCellContents?: boolean
   maxWidth?: number
   breakpoint?: number
@@ -10,7 +10,7 @@ interface UseAggridParams {
   autoSizeColumns?: string[]
 }
 
-export default function useAggrid({ fitCellContents, maxWidth, breakpoint, pinned, resize, keepScroll, autoSizeColumns }: UseAggridParams) {
+export default function useAgGrid({ fitCellContents, maxWidth, breakpoint, pinned, resize, keepScroll, autoSizeColumns }: useAgGridParams) {
   let _gridApi: any
   let _defaultColDef: Record<string, any> | undefined
   let _columnState: any

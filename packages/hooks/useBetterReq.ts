@@ -4,7 +4,7 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
   delPending?: boolean
   retryCount?: number
   interval?: number
-}) {
+}, errCallback?: (err: Error) => void, finallyCallback?: () => void) {
   const { delPending, retryCount: originRetryCount, interval } = options || {}
   let retryCount: number
 
@@ -41,7 +41,11 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
           await _getData(false, ...args)
         } else {
           error.value = true
-          throw err
+          if (errCallback) {
+            errCallback(err)
+          } else {
+            throw err
+          }
         }
       }
     } finally {
@@ -49,6 +53,8 @@ export default function (cb: (...args: any[]) => Promise<any>, options?: {
       if (activeRequests === 0) {
         loading.value = false
       }
+      finallyCallback && finallyCallback()
+
     }
   }
 

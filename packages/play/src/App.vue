@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useBetterReq } from '@x-anything/hooks'
+import useBetterReq from '../../hooks/useBetterReq'
+// import { useBetterReq } from '@x-anything/hooks'
 import { XLoading, XPopconfirm } from 'x-anything'
 
 // Loading
@@ -30,7 +31,6 @@ const confirm = () => console.log('confirm')
 const cancel = () => console.log('cancel')
 
 // ErrorContainer
-
 const {
   getData,
   loading: errorContainerLoading,
@@ -50,9 +50,26 @@ const {
     delPending: true,
     // retryCount: 2,
     // interval: 3000,
+  },
+  (err) => {
+    console.log(err.message)
+  },
+  () => {
+    console.log('finally')
   }
 )
-
+// const getData = async () => {
+//   try {
+//     const response = await fetch('https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok')
+//     }
+//     const data = await response.json()
+//     console.log(data)
+//   } catch (error) {
+//     console.dir(error)
+//   }
+// }
 getData()
 </script>
 

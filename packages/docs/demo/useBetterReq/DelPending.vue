@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useBetterReq } from '@x-anything/hooks'
+import useBetterReq from '../../../hooks/useBetterReq'
 
 const { getData, loading, error } = useBetterReq(
   async (controller) => {
-    const response = await fetch('http://jsonplaceholder.typicode.com/posts', {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
       signal: controller.signal,
     })
     if (!response.ok) {
@@ -19,6 +19,6 @@ const { getData, loading, error } = useBetterReq(
 </script>
 
 <template>
-  <x-button @click="getData">点击发送请求</x-button>
+  <x-button :throttleDuration="0" @click="getData">点击发送请求</x-button>
   请求中：{{ loading }} 请求错误：{{ error }}
 </template>

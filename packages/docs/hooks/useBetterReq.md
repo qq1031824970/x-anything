@@ -7,8 +7,8 @@ prev:
   text: useClickOutside 外部点击
 
 next:
-  link: /hooks/useAggrid
-  text: useAggrid ag-grid 工具
+  link: /hooks/useAgGrid
+  text: useAgGrid ag-grid 工具
 ---
 
 # useBetterReq 更好的请求
@@ -59,6 +59,14 @@ demo-preview=../demo/useBetterReq/Retry.vue
 
 ::: preview
 demo-preview=../demo/useBetterReq/Params.vue
+:::
+
+## 错误处理
+
+useBetterReq 的第三个参数是 `catch` 回调，第四个参数是 `finally` 回调
+
+::: preview
+demo-preview=../demo/useBetterReq/ErrCallback.vue
 :::
 
 ## 完整功能

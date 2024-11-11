@@ -5,7 +5,7 @@ const { getData, loading, error } = useBetterReq(
   async (params1, params2, controller) => {
     console.log(params1, params2, controller)
 
-    const response = await fetch('http://jsonplaceholder.typicode.com/posts', {
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
       signal: controller.signal,
     })
     if (!response.ok) {
