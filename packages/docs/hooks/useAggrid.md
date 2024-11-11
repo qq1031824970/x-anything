@@ -41,7 +41,7 @@ demo-preview=../demo/useAgGrid/MaxWidth.vue
 :::
 
 ::: preview
-demo-preview=../demo/useAgGrid/MaxWidthuseAgGrid.vue
+demo-preview=../demo/useAgGrid/MaxWidthUseAgGrid.vue
 :::
 
 ## 断点
