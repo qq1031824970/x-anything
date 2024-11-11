@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/qq1031824970/x-anything/compare/v0.0.4...v0.0.5) (2024-11-11)
+
+### ✨ Features | 新功能
+
+* popconfirm ([c5c2a7c](https://github.com/qq1031824970/x-anything/commit/c5c2a7c2af4ef87632f48c91eb65e4c740ddcde6))by.@xyl
+* useVxeTable ([2ce5aab](https://github.com/qq1031824970/x-anything/commit/2ce5aab196150db83920e85b71c03fa1ee851bc2))by.@xyl
+
 ## [0.0.4](https://github.com/qq1031824970/x-anything/compare/v0.0.3...v0.0.4) (2024-11-07)
 
 ### ✨ Features | 新功能
