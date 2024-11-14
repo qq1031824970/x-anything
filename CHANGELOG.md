@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/qq1031824970/x-anything/compare/v0.0.5...v0.0.6) (2024-11-14)
+
+### ✨ Features | 新功能
+
+* useVxeTable 固定列 ([43bc0f9](https://github.com/qq1031824970/x-anything/commit/43bc0f9e7a64e0d77712a0275a7012646be43dc0))by.@xyl
+
 ## [0.0.5](https://github.com/qq1031824970/x-anything/compare/v0.0.4...v0.0.5) (2024-11-11)
 
 ### ✨ Features | 新功能
