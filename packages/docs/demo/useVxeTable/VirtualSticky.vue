@@ -1,5 +1,9 @@
 <template>
-  <vxe-grid ref="gridRef" v-bind="gridOptions" class="top-64"> </vxe-grid>
+  <div>
+    <div>
+      <vxe-grid ref="gridRef" v-bind="gridOptions" class="top-64"> </vxe-grid>
+    </div>
+  </div>
 </template>
 
 <script lang="tsx" setup>

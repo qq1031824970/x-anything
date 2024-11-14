@@ -87,17 +87,16 @@ loadData(50)
 
 <style>
 /* 无关代码，为修复文档通用样式造成的影响 */
-.vp-doc table {
+.vp-doc .vxe-grid table,
+.vp-doc .vxe-grid td,
+.vp-doc .vxe-grid th {
   margin: initial;
-}
-.vp-doc td,
-.vp-doc th {
   border: initial;
-}
-.vp-doc th {
   padding: initial;
+  overflow-x: initial;
 }
-.vitepress-demo-preview__element-plus__container {
+
+.vitepress-demo-preview__element-plus__container:has(.vxe-grid) {
   overflow: initial;
 }
 </style>

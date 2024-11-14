@@ -1,64 +1,57 @@
 <template>
-  <div>
-    <button @click="show = !show">显示隐藏</button>
-    <vxe-button @click="loadData(5000)">加载5k条</vxe-button>
-    <vxe-button @click="loadData(10000)">加载1w条</vxe-button>
-    <vxe-button @click="loadData(30000)">加载3w条</vxe-button>
+  <x-button @click="handleOpenDialog">打开弹窗(为避免样式污染)</x-button>
+  <Teleport to="body">
+    <dialog id="largeClumnsdialog">
+      <div>
+        <x-button @click="loadData(5000)">加载5k条</x-button>
+        <x-button @click="loadData(10000)">加载1w条</x-button>
+        <x-button @click="loadData(30000)">加载3w条</x-button>
 
-    <vxe-grid
-      ref="gridRef"
-      v-show="show"
-      v-bind="gridOptions"
-      style="margin-bottom: 1000px"
-    >
-      <template #buttonSlot>
-        <x-tooltip title="tooltip">
-          <x-button>按钮</x-button>
-        </x-tooltip>
-      </template>
-    </vxe-grid>
-  </div>
+        <vxe-grid v-bind="gridOptions">
+          <template #buttonSlot>
+            <x-tooltip title="tooltip">
+              <x-button>按钮</x-button>
+            </x-tooltip>
+          </template>
+        </vxe-grid>
+      </div>
+      <x-button @click="handleCloseDialog">关闭</x-button>
+    </dialog>
+  </Teleport>
 </template>
 
 <script lang="tsx" setup>
-import { log, VxeGrid } from 'vxe-table'
+import { VxeGrid } from 'vxe-table'
 import 'vxe-table/styles/all.scss'
-import { reactive, nextTick, ref, onMounted } from 'vue'
-import { VxeUI, type VxeGridProps, type VxeColumnPropTypes } from 'vxe-table'
-import useVxeTable from '../../hooks/useVxeTable'
-
-const show = ref(true)
-
+import { reactive } from 'vue'
+import { type VxeGridProps } from 'vxe-table'
 interface RowVO {
   id: number
   [key: string]: string | number | boolean | any[]
 }
 
-const imgUrlCellRender = reactive<VxeColumnPropTypes.CellRender>({
-  name: 'VxeImage',
-  props: {
-    width: 36,
-    height: 36,
-  },
-})
-
 const gridOptions = reactive<VxeGridProps<RowVO>>({
+  showOverflow: true,
   border: true,
   loading: false,
-  height: window.innerHeight,
+  height: 600,
   columnConfig: {
     resizable: true,
   },
   scrollY: {
     enabled: true,
     gt: 0,
-    // mode: 'wheel',
   },
   columns: [
-    { type: 'checkbox', width: 100, fixed: 'left' },
-    { title: '列0', field: 'col0', width: 100, fixed: 'left' },
-    { title: '列1', field: 'imgUrl', width: 100 },
-    { title: '列2', field: 'col2', width: 300 },
+    { type: 'checkbox', width: 80, fixed: 'left' },
+    {
+      title: '列0',
+      fixed: 'left',
+      children: [
+        { title: '列1', field: 'imgUrl', width: 80 },
+        { title: '列2', field: 'col2', width: 80 },
+      ],
+    },
     { title: '列3', field: 'col3', width: 300 },
     { title: '列4', field: 'col4', width: 300 },
     { title: '列5', field: 'col5', width: 300 },
@@ -421,7 +414,6 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
       slots: {
         default: 'buttonSlot',
       },
-      fixed: 'right',
     },
     {
       title: '列6',
@@ -430,10 +422,16 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
       slots: {
         default: 'buttonSlot',
       },
-      fixed: 'right',
     },
-    { title: '列7', field: 'col7', width: 200, fixed: 'right' },
-    { title: '列8', field: 'col8', width: 200, fixed: 'right' },
+    {
+      title: '列7',
+      fixed: 'right',
+      children: [
+        { title: '列9', field: 'col9', width: 80 },
+        { title: '列10', field: 'col10', width: 80 },
+      ],
+    },
+    { title: '列8', field: 'col8', width: 80, fixed: 'right' },
   ],
   data: [],
 })
@@ -477,19 +475,24 @@ const loadData = (rowSize: number) => {
       dataList.push(item)
     }
 
-    const startTime = Date.now()
     gridOptions.data = dataList
     gridOptions.loading = false
   }, 350)
 }
 
-setTimeout(() => {
-  loadData(200)
-}, 100)
+loadData(200)
 
-const gridRef = ref()
-useVxeTable(gridRef, {
-  sticky: true,
-  virtualSticky: true,
-})
+// 不相关代码，传送到body下为避免样式污染造成的虚拟滚动错位
+const handleOpenDialog = () => {
+  const dialog = document.getElementById(
+    'largeClumnsdialog'
+  ) as HTMLDialogElement
+  dialog.showModal()
+}
+const handleCloseDialog = () => {
+  const dialog = document.getElementById(
+    'largeClumnsdialog'
+  ) as HTMLDialogElement
+  dialog.close()
+}
 </script>
