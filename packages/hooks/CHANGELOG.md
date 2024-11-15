@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/qq1031824970/x-anything/compare/v0.0.6...v0.0.7) (2024-11-15)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* useVxeTable非最后一列的最后一个子列也设置上最后列类名的问题 ([6ce9244](https://github.com/qq1031824970/x-anything/commit/6ce924494ad741370c9763ae8750f9ceb721c164))by.@xyl
+
 ## [0.0.6](https://github.com/qq1031824970/x-anything/compare/v0.0.5...v0.0.6) (2024-11-14)
 
 ### ✨ Features | 新功能
