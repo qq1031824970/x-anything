@@ -29,7 +29,8 @@ import { VxeGrid } from 'vxe-table'
 import 'vxe-table/styles/all.scss'
 import { reactive, ref, toRef } from 'vue'
 import { type VxeGridProps } from 'vxe-table'
-import useVxeTable from '../../../hooks/useVxeTable'
+import { useVxeTable } from '@x-anything/hooks'
+
 interface RowVO {
   id: number
   [key: string]: string | number | boolean | any[]

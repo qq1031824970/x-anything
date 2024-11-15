@@ -186,8 +186,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         gridElement.parentElement!.parentElement!.style.height = gridElementHeight
           ? `${gridElementHeight}px`
           : 'auto'
-        // 设置后同步一次滚动条
-        virtualScroll()
       }
     }
 
@@ -204,6 +202,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       gridRef.value?.scrollTo(null, -distanceToTop)
     }
 
+    watch(() => gridRef.value?.data, () => setTimeout(virtualScroll))
     useEventListener(window, 'scroll', virtualScroll)
 
     onMounted(() => {
@@ -214,7 +213,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
   }
 
   if (columns?.value?.length) {
-    const _fixedColumns = {} as Record<string, {
+    let _fixedColumns = {} as Record<string, {
       fixed: 'left' | 'right',
       renderWidth?: number,
       left?: number,
@@ -277,7 +276,8 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       style && style.remove()
     }
 
-    function setColmunFixedClass(columns: any[]) {
+    function setColmunFixedLastClass(columns: any[]) {
+      if (!columns?.length) return
       const lastFixedLeft = [...columns].reverse().find(item => (item.fixed === 'left'))
       if (lastFixedLeft) {
         lastFixedLeft.className = {
@@ -285,6 +285,10 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         }
         lastFixedLeft.headerClassName = {
           'last-fixed-left': true
+        }
+        if (lastFixedLeft?.children) {
+          lastFixedLeft.children.forEach((e: any) => e.fixed = 'left')
+          setColmunFixedLastClass(lastFixedLeft.children)
         }
       }
       const lastFixedRight = columns.find((item: any) => (item.fixed === 'right'))
@@ -295,8 +299,14 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         lastFixedRight.headerClassName = {
           'last-fixed-right': true
         }
+        if (lastFixedRight?.children) {
+          lastFixedRight.children.forEach((e: any) => e.fixed = 'right')
+          setColmunFixedLastClass(lastFixedRight.children)
+        }
       }
+    }
 
+    function setColmunFixedClass(columns: any[]) {
       for (let i = 0; i < columns.length; i++) {
         const { fixed } = columns[i]
         const colId = columns[i].field || columns[i].type || columns[i].title
@@ -314,7 +324,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
             fixed: 'left'
           }
           if (columns[i].children) {
-            columns[i].children.forEach((e: any) => e.fixed = 'left')
             setColmunFixedClass(columns[i].children)
           }
         } else if (fixed === 'right') {
@@ -331,7 +340,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
             fixed: 'right'
           }
           if (columns[i].children) {
-            columns[i].children.forEach((e: any) => e.fixed = 'right')
             setColmunFixedClass(columns[i].children)
           }
         }
@@ -376,7 +384,9 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
             let left = parentLeftorRight || 0
             for (let i = 0; i < index; i++) {
               const colId = columns[i].field || columns[i].type || columns[i].title
-              left += _fixedColumns[colId].renderWidth || columns[i].width || 0
+              if (_fixedColumns[colId]?.fixed) {
+                left += _fixedColumns[colId]?.renderWidth || columns[i].width || 0
+              }
             }
             _fixedColumns[colId].left = left
             if (item.children) {
@@ -386,7 +396,9 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
             let right = parentLeftorRight || 0
             for (let i = columns.length - 1; i > index; i--) {
               const colId = columns[i].field || columns[i].type || columns[i].title
-              right += _fixedColumns[colId].renderWidth || columns[i].width || 0
+              if (_fixedColumns[colId]?.fixed) {
+                right += _fixedColumns[colId]?.renderWidth || columns[i].width || 0
+              }
             }
             _fixedColumns[colId].right = right
             if (item.children) {
@@ -436,6 +448,8 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
 
     watch(() => gridRef.value?.data, setFixedClass)
     watch(() => columns.value, () => {
+      _fixedColumns = {}
+      setColmunFixedLastClass(columns.value as any[])
       setColmunFixedClass(columns.value as any[])
       setColmunFixed(columns.value as any[])
       setTimeout(setFixedClass);
@@ -443,6 +457,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
 
     useEventListener(tableBodyWrapper, 'scroll', setFixedClass)
 
+    setColmunFixedLastClass(columns.value as any[])
     setColmunFixedClass(columns.value as any[])
     onMounted(() => {
       getElements()
