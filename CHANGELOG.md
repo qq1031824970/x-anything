@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/qq1031824970/x-anything/compare/v0.0.7...v0.0.8) (2024-11-19)
+
+### ✨ Features | 新功能
+
+* useVxeTabe 固定列支持非虚拟滚动模式 ([0c32dd8](https://github.com/qq1031824970/x-anything/commit/0c32dd8c7d36e5b3d082d28ac5084416378db78b))by.@xyl
+
 ## [0.0.7](https://github.com/qq1031824970/x-anything/compare/v0.0.6...v0.0.7) (2024-11-15)
 
 ### 🐛 Bug Fixes | Bug 修复
