@@ -57,12 +57,22 @@ demo-preview=../demo/useVxeTable/LargeClumnsAutoRowHeight.vue
 
 ## 采用原生 sticky 来固定左右列
 
-在没有固定列的情况下性能好很多，这里 useVxeTable 提供一个配置 `columns`, 两个回调 `cellStyle`, `headerCellStyle` 来实现原生粘性定位，注意 columns 请提供响应式数据，以便在列更新时更新样式。如果有列宽拖动还需绑定 `resizableChange`
+在没有固定列的情况下性能好很多，这里 useVxeTable 提供一个配置 `columns`, 注意请提供响应式数据，以便在列更新时更新样式。如果有列宽拖动还需绑定 `resizableChange`。
 
-性能会比自带固定列好，不会错位，目前 4.8.x 版本白屏问题比较严重，待官方优化
+性能会比自带固定列好，不会错位
 
 ::: preview
 demo-preview=../demo/useVxeTable/LargeClumnsSticky.vue
+:::
+
+## 采用原生 sticky 来固定左右列(开启虚拟滚动)
+
+目前 4.8.x 版本白屏问题比较严重，待官方优化
+
+如果开启虚拟滚动还需绑定 `cellStyle`
+
+::: preview
+demo-preview=../demo/useVxeTable/LargeClumnsStickyVirtual.vue
 :::
 
 ## 完整功能

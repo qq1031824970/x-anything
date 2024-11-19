@@ -45,7 +45,7 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
     resizable: true,
   },
   scrollY: {
-    enabled: true,
+    enabled: false,
     gt: 0,
   },
   columns: [
@@ -443,11 +443,9 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
 })
 
 const gridRef = ref()
-const { resizableChange, cellStyle, headerCellStyle } = useVxeTable(gridRef, {
+const { resizableChange } = useVxeTable(gridRef, {
   columns: toRef(gridOptions, 'columns'),
 })
-gridOptions.cellStyle = cellStyle
-gridOptions.headerCellStyle = headerCellStyle
 
 // 模拟行数据
 const loadData = (rowSize: number) => {
@@ -493,7 +491,7 @@ const loadData = (rowSize: number) => {
   }, 350)
 }
 
-loadData(200)
+loadData(100)
 
 // 不相关代码，传送到body下为避免样式污染造成的虚拟滚动错位
 const handleOpenDialog = () => {

@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted, watch, type Ref } from 'vue'
 import useEventListener from './useEventListener'
 
-
 interface UseVxeTableParams {
   sticky?: boolean
   virtualSticky?: boolean
@@ -214,10 +213,11 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
 
   if (columns?.value?.length) {
     let _fixedColumns = {} as Record<string, {
-      fixed: 'left' | 'right',
+      fixed?: 'left' | 'right',
+      className?: Record<string, boolean>
       renderWidth?: number,
       left?: number,
-      right?: number
+      right?: number,
     }>
 
     let gridElement: HTMLElement | null = null
@@ -259,7 +259,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         .left-scrolling--middle .last-fixed-left {
           box-shadow: 5px 0 3px -1px var(--vxe-ui-table-fixed-scrolling-box-shadow-color);
         }
-        .right-scrolling--middle .last-fixed-right {
+        .right-scrolling--middle .first-fixed-right {
           box-shadow: -5px 0 3px -1px var(--vxe-ui-table-fixed-scrolling-box-shadow-color);
         }
         .vxe-header--gutter.col--gutter {
@@ -276,138 +276,22 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       style && style.remove()
     }
 
-    function setColmunFixedLastClass(columns: any[]) {
-      if (!columns?.length) return
-      const lastFixedLeft = [...columns].reverse().find(item => (item.fixed === 'left'))
-      if (lastFixedLeft) {
-        lastFixedLeft.className = {
-          'last-fixed-left': true
-        }
-        lastFixedLeft.headerClassName = {
-          'last-fixed-left': true
-        }
-        if (lastFixedLeft?.children) {
-          lastFixedLeft.children.forEach((e: any) => e.fixed = 'left')
-          setColmunFixedLastClass(lastFixedLeft.children)
-        }
-      }
-      const lastFixedRight = columns.find((item: any) => (item.fixed === 'right'))
-      if (lastFixedRight) {
-        lastFixedRight.className = {
-          'last-fixed-right': true
-        }
-        lastFixedRight.headerClassName = {
-          'last-fixed-right': true
-        }
-        if (lastFixedRight?.children) {
-          lastFixedRight.children.forEach((e: any) => e.fixed = 'right')
-          setColmunFixedLastClass(lastFixedRight.children)
-        }
-      }
-    }
-
-    function setColmunFixedClass(columns: any[]) {
-      for (let i = 0; i < columns.length; i++) {
-        const { fixed } = columns[i]
-        const colId = columns[i].field || columns[i].type || columns[i].title
-        if (fixed === 'left') {
-          delete columns[i].fixed
-          columns[i].className = {
-            ...columns[i].className,
-            'fixed-left': true
-          }
-          columns[i].headerClassName = {
-            ...columns[i].headerClassName,
-            'fixed-left': true
-          }
-          _fixedColumns[colId] = {
-            fixed: 'left'
-          }
-          if (columns[i].children) {
-            setColmunFixedClass(columns[i].children)
-          }
-        } else if (fixed === 'right') {
-          delete columns[i].fixed
-          columns[i].className = {
-            ...columns[i].className,
-            'fixed-right': true
-          }
-          columns[i].headerClassName = {
-            ...columns[i].headerClassName,
-            'fixed-right': true
-          }
-          _fixedColumns[colId] = {
-            fixed: 'right'
-          }
-          if (columns[i].children) {
-            setColmunFixedClass(columns[i].children)
-          }
-        }
-      }
-    }
-
     const resizableChange = ({ column }: any) => {
-      const colId = column.field || column.type || column.title
+      const colId = column.id
       if (_fixedColumns[colId]) {
+        const difference = column.renderWidth - (_fixedColumns[colId].renderWidth || 0)
         _fixedColumns[colId].renderWidth = column.renderWidth
-        setColmunFixed(columns.value as any[])
-      }
-    }
-
-    const _cellStyle = ({ column }: any, isHeader?: 'header'): any => {
-      let headerGutterWidth = 0
-      if (isHeader && !virtualSticky && tableBodyWrapper.value) {
-        // 如果没开页面虚拟滚动表头会有右边一块
-        headerGutterWidth = tableBodyWrapper.value.offsetWidth - tableBodyWrapper.value.clientWidth
-      }
-
-      const colId = column.field || column.type || column.title
-      if (_fixedColumns.hasOwnProperty(colId)) {
-        const fixed = _fixedColumns[colId].fixed
-        if (fixed === 'left') {
-          return {
-            left: (_fixedColumns[colId].left || 0) + 'px',
-          }
-        } else {
-          return {
-            right: (_fixedColumns[colId].right || 0) + headerGutterWidth + 'px',
-          }
+        const parentId = column.parentId
+        if (_fixedColumns[parentId]?.renderWidth) {
+          _fixedColumns[parentId].renderWidth += difference
         }
+        const { collectColumn } = gridRef.value?.getTableColumn()
+        setColumnsLeftOrRight(collectColumn)
+        setHeaderCellClassNameAndLeftOrRight()
+        setBodyCellClassNameAndLeftOrRight()
       }
     }
 
-    function setColmunFixed(columns: any[], parentLeftorRight?: number) {
-      columns.forEach((item, index) => {
-        const colId = item.field || item.type || item.title
-        if (_fixedColumns.hasOwnProperty(colId)) {
-          if (_fixedColumns[colId].fixed === 'left') {
-            let left = parentLeftorRight || 0
-            for (let i = 0; i < index; i++) {
-              const colId = columns[i].field || columns[i].type || columns[i].title
-              if (_fixedColumns[colId]?.fixed) {
-                left += _fixedColumns[colId]?.renderWidth || columns[i].width || 0
-              }
-            }
-            _fixedColumns[colId].left = left
-            if (item.children) {
-              setColmunFixed(item.children, left)
-            }
-          } else if (_fixedColumns[colId].fixed === 'right') {
-            let right = parentLeftorRight || 0
-            for (let i = columns.length - 1; i > index; i--) {
-              const colId = columns[i].field || columns[i].type || columns[i].title
-              if (_fixedColumns[colId]?.fixed) {
-                right += _fixedColumns[colId]?.renderWidth || columns[i].width || 0
-              }
-            }
-            _fixedColumns[colId].right = right
-            if (item.children) {
-              setColmunFixed(item.children, right)
-            }
-          }
-        }
-      })
-    }
 
     function getElements() {
       if (!gridRef.value) return
@@ -425,11 +309,216 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         gridElement?.classList.remove('left-scrolling--middle')
       }
       if (tableBodyWrapper.value.scrollLeft + tableBodyWrapper.value.clientWidth < tableBodyWrapper.value.scrollWidth) {
-
         gridElement?.classList.add('right-scrolling--middle')
       } else {
         gridElement?.classList.remove('right-scrolling--middle')
       }
+    }
+
+    function getColumnId(column: any) {
+      return column?.field || column?.type || column?.title
+    }
+
+
+    function initBorderColumnClassName(columns: any[]) {
+      let lastFixedLeft = null;
+      for (let i = columns.length - 1; i >= 0; i--) {
+        if (columns[i].fixed === 'left') {
+          lastFixedLeft = columns[i];
+          break;
+        }
+      }
+      if (lastFixedLeft) {
+        const lastFixedLeftColumnId = getColumnId(lastFixedLeft)
+        const { children } = lastFixedLeft
+        _fixedColumns[lastFixedLeftColumnId] = {
+          className: {
+            'last-fixed-left': true
+          }
+        }
+        if (children?.length) {
+          children.forEach((child: any) => child.fixed = 'left')
+          initBorderColumnClassName(lastFixedLeft.children)
+        }
+
+        // 虚拟滚动下
+        lastFixedLeft.className = {
+          ...lastFixedLeft?.className || {},
+          'last-fixed-left': true
+        }
+      }
+
+      const firstFixedRight = columns.find((item: any) => (item.fixed === 'right'))
+      if (firstFixedRight) {
+        const lastFixedLeftColumnId = getColumnId(firstFixedRight)
+        const { children } = firstFixedRight
+        _fixedColumns[lastFixedLeftColumnId] = {
+          className: {
+            'first-fixed-right': true
+          }
+        }
+        if (children?.length) {
+          children.forEach((child: any) => child.fixed = 'right')
+          initBorderColumnClassName(firstFixedRight.children)
+        }
+
+
+        // 虚拟滚动下
+        firstFixedRight.className = {
+          ...firstFixedRight.className || {},
+          'first-fixed-right': true
+        }
+      }
+    }
+
+    function initColumnsFixed(columns: any[]) {
+      columns.forEach(item => {
+        const { fixed, children } = item
+        const columnId = getColumnId(item)
+        if (fixed) {
+          _fixedColumns[columnId] = {
+            ..._fixedColumns[columnId] || {},
+            fixed,
+          }
+          if (children?.length) {
+            children.forEach((child: any) => child.fixed = fixed)
+            initColumnsFixed(children)
+          }
+          delete item.fixed
+        }
+      })
+    }
+
+    function setFixedColumnsClassNameAndRenderWidth(columnInfos: any[]) {
+      for (let i = 0; i < columnInfos.length; i++) {
+        const columnInfo = columnInfos[i]
+        const columnId = getColumnId(columnInfo)
+        const item = _fixedColumns[columnId]
+
+        if (item) {
+          const { fixed } = item
+          const { id, children } = columnInfo
+          let { renderWidth } = columnInfo
+
+          if (!renderWidth) {
+            const th = gridElement?.querySelector(`.vxe-table--main-wrapper .vxe-header--column.${id}`) as HTMLElement
+            th && (renderWidth = th.clientWidth)
+          }
+
+          _fixedColumns[id] = {
+            fixed,
+            className: {
+              ...item.className,
+              [`fixed-${fixed}`]: true
+            },
+            renderWidth,
+          }
+
+          if (children?.length) {
+            setFixedColumnsClassNameAndRenderWidth(children)
+          }
+
+          delete _fixedColumns[columnId]
+
+          // 虚拟滚动下
+          columnInfo.className = {
+            ...columnInfo?.className || {},
+            [`fixed-${fixed}`]: true
+          }
+        }
+      }
+    }
+
+    function setColumnsLeftOrRight(columnInfos: any[], parentLeftOrRight?: number) {
+      for (let i = 0; i < columnInfos.length; i++) {
+        const columnInfo = columnInfos[i]
+        const columnId = columnInfo.id
+        const item = _fixedColumns[columnId]
+
+        if (item) {
+          const { fixed } = item
+          const { id, children } = columnInfo
+          if (fixed === 'left') {
+            let left = parentLeftOrRight || 0
+            for (let j = 0; j < i; j++) {
+              const colId = columnInfos[j].id
+              if (_fixedColumns[colId]) {
+                left += _fixedColumns[colId]?.renderWidth || columnInfos[j].width || 0
+              }
+            }
+            _fixedColumns[id].left = left
+
+            if (children?.length) {
+              setColumnsLeftOrRight(children, left)
+            }
+
+          } else if (fixed === 'right') {
+            let right = parentLeftOrRight || 0
+            for (let j = columnInfos.length - 1; j > i; j--) {
+              const colId = columnInfos[j].id
+              if (_fixedColumns[colId]) {
+                right += _fixedColumns[colId]?.renderWidth || columnInfos[j].width || 0
+              }
+            }
+            _fixedColumns[id].right = right
+
+            if (children?.length) {
+              setColumnsLeftOrRight(children, right)
+            }
+          }
+        }
+      }
+    }
+
+    function setHeaderCellClassNameAndLeftOrRight() {
+      Object.keys(_fixedColumns).forEach((key) => {
+        const { className, fixed } = _fixedColumns[key]
+        const ths = gridElement?.querySelectorAll(`.vxe-table--main-wrapper .vxe-header--column.${key}`) as NodeListOf<HTMLElement>
+        if (ths && ths.length) {
+          let headerGutterWidth = 0
+          if (fixed === 'right') {
+            if (!virtualSticky && tableBodyWrapper.value) {
+              // 如果没开页面虚拟滚动表头会有右边一块 // 也要等data加载了看有没有滚动条再调用一次
+              headerGutterWidth = tableBodyWrapper.value.offsetWidth - tableBodyWrapper.value.clientWidth
+            }
+          }
+          ths[0].classList.add(...Object.keys(className || {}))
+          ths[0].style[fixed!] = `${(_fixedColumns[key][fixed!] || 0) + headerGutterWidth}px`
+        }
+      })
+    }
+
+    function setBodyCellClassNameAndLeftOrRight() {
+      Object.keys(_fixedColumns).forEach((key) => {
+        const { className, fixed } = _fixedColumns[key]
+        const tds = gridElement?.querySelectorAll(`.vxe-table--body-wrapper .vxe-body--column.${key}`) as NodeListOf<HTMLElement>
+        if (tds && tds.length) {
+          tds.forEach(item => {
+            item.classList.add(...Object.keys(className || {}))
+            item.style[fixed!] = `${_fixedColumns[key][fixed!] || 0}px`
+          })
+        }
+      })
+    }
+
+
+    function clearCellClassNameAndLeftOrRight() {
+      Object.keys(_fixedColumns).forEach((key) => {
+        const { fixed } = _fixedColumns[key]
+        const ths = gridElement?.querySelectorAll(`.vxe-table--main-wrapper .vxe-header--column.${key}`) as NodeListOf<HTMLElement>
+        if (ths && ths.length) {
+          ths[0].style[fixed!] = ''
+        }
+      })
+      Object.keys(_fixedColumns).forEach((key) => {
+        const { fixed } = _fixedColumns[key]
+        const tds = gridElement?.querySelectorAll(`.vxe-table--body-wrapper .vxe-body--column.${key}`) as NodeListOf<HTMLElement>
+        if (tds && tds.length) {
+          tds.forEach(item => {
+            item.style[fixed!] = ''
+          })
+        }
+      })
     }
 
     function observer() {
@@ -438,6 +527,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
           for (const entry of entries) {
             const { width } = entry.contentRect
             if (width) {
+              setHeaderCellClassNameAndLeftOrRight()
               setFixedClass()
             }
           }
@@ -446,34 +536,68 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       }
     }
 
-    watch(() => gridRef.value?.data, setFixedClass)
+    // 虚拟滚动下
+    const cellStyle = ({ column }: any): any => {
+      const colId = column.id
+      const item = _fixedColumns[colId]
+      if (item) {
+        const fixed = item.fixed
+        return {
+          [fixed!]: item[fixed!] + 'px',
+        }
+      }
+    }
+
+    watch(() => gridRef.value?.data, () => {
+      setTimeout(() => {
+        setHeaderCellClassNameAndLeftOrRight()
+        setBodyCellClassNameAndLeftOrRight()
+        setFixedClass()
+      })
+    })
     watch(() => columns.value, () => {
+      clearCellClassNameAndLeftOrRight()
       _fixedColumns = {}
-      setColmunFixedLastClass(columns.value as any[])
-      setColmunFixedClass(columns.value as any[])
-      setColmunFixed(columns.value as any[])
-      setTimeout(setFixedClass);
+      initBorderColumnClassName(columns.value || [])
+      initColumnsFixed(columns.value || [])
+      setTimeout(() => {
+        const { collectColumn } = gridRef.value?.getTableColumn()
+        setFixedColumnsClassNameAndRenderWidth(collectColumn)
+        setColumnsLeftOrRight(collectColumn)
+        setHeaderCellClassNameAndLeftOrRight()
+        setBodyCellClassNameAndLeftOrRight()
+        setFixedClass()
+      })
+    })
+    watch(() => gridRef.value, () => {
+      init()
     })
 
-    useEventListener(tableBodyWrapper, 'scroll', setFixedClass)
-
-    setColmunFixedLastClass(columns.value as any[])
-    setColmunFixedClass(columns.value as any[])
-    onMounted(() => {
+    const init = () => {
+      if (!gridRef.value) return
       getElements()
       setStyle() // 需要在getElements之后
-      setColmunFixed(columns.value as any[])// 用到tableBodyWrapper，放onMounted里
+      setTimeout(() => {
+        const { collectColumn } = gridRef.value?.getTableColumn()
+        setFixedColumnsClassNameAndRenderWidth(collectColumn)
+        setColumnsLeftOrRight(collectColumn)
+        setHeaderCellClassNameAndLeftOrRight()
+        setBodyCellClassNameAndLeftOrRight()
+      });
       observer()
       setTimeout(setFixedClass);
-    })
+    }
+
+    useEventListener(tableBodyWrapper, 'scroll', setFixedClass)
+    initBorderColumnClassName(columns.value)
+    initColumnsFixed(columns.value)
     onUnmounted(() => {
       removeStyle()
     })
 
     return {
       resizableChange,
-      cellStyle: _cellStyle,
-      headerCellStyle: (params: any) => _cellStyle(params, 'header')
+      cellStyle
     }
   }
 

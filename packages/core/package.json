@@ -21,7 +21,8 @@
     }
   },
   "sideEffects": [
-    "./dist/index.css"
+    "./dist/index.css",
+    "./dist/theme/*.css"
   ],
   "scripts": {
     "build": "run-p build-es build-umd",

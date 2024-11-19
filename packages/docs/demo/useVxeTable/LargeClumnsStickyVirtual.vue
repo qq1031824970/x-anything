@@ -1,41 +1,46 @@
 <template>
-  <div>
-    <x-button @click="loadData(5000)">加载5k条</x-button>
-    <x-button @click="loadData(10000)">加载1w条</x-button>
-    <x-button @click="loadData(30000)">加载3w条</x-button>
+  <x-button @click="handleOpenDialog">打开弹窗(为避免样式污染)</x-button>
+  <Teleport to="body">
+    <dialog id="largeClumnsStickyVirtualDialog">
+      <div>
+        <x-button @click="loadData(5000)">加载5k条</x-button>
+        <x-button @click="loadData(10000)">加载1w条</x-button>
+        <x-button @click="loadData(30000)">加载3w条</x-button>
 
-    <div style="width: 100%">
-      <vxe-grid
-        class="top-64"
-        ref="gridRef"
-        v-bind="gridOptions"
-        @resizable-change="resizableChange"
-      >
-        <template #buttonSlot>
-          <x-tooltip title="tooltip">
-            <x-button>按钮</x-button>
-          </x-tooltip>
-        </template>
-      </vxe-grid>
-    </div>
-  </div>
+        <vxe-grid
+          ref="gridRef"
+          v-bind="gridOptions"
+          @resizable-change="resizableChange"
+        >
+          <template #buttonSlot>
+            <x-tooltip title="tooltip">
+              <x-button>按钮</x-button>
+            </x-tooltip>
+          </template>
+        </vxe-grid>
+      </div>
+      <x-button @click="handleCloseDialog">关闭</x-button>
+    </dialog>
+  </Teleport>
 </template>
 
 <script lang="tsx" setup>
 import { VxeGrid } from 'vxe-table'
 import 'vxe-table/styles/all.scss'
-import { reactive, ref, toRef, computed } from 'vue'
+import { reactive, ref, toRef } from 'vue'
 import { type VxeGridProps } from 'vxe-table'
 import { useVxeTable } from '@x-anything/hooks'
+
 interface RowVO {
   id: number
   [key: string]: string | number | boolean | any[]
 }
 
 const gridOptions = reactive<VxeGridProps<RowVO>>({
+  showOverflow: true,
   border: true,
   loading: false,
-  height: computed(() => window.innerHeight) as any,
+  height: 600,
   columnConfig: {
     resizable: true,
   },
@@ -439,7 +444,6 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
 
 const gridRef = ref()
 const { resizableChange, cellStyle } = useVxeTable(gridRef, {
-  virtualSticky: true,
   columns: toRef(gridOptions, 'columns'),
 })
 gridOptions.cellStyle = cellStyle
@@ -488,5 +492,19 @@ const loadData = (rowSize: number) => {
   }, 350)
 }
 
-loadData(200)
+loadData(100)
+
+// 不相关代码，传送到body下为避免样式污染造成的虚拟滚动错位
+const handleOpenDialog = () => {
+  const dialog = document.getElementById(
+    'largeClumnsStickyVirtualDialog'
+  ) as HTMLDialogElement
+  dialog.showModal()
+}
+const handleCloseDialog = () => {
+  const dialog = document.getElementById(
+    'largeClumnsStickyVirtualDialog'
+  ) as HTMLDialogElement
+  dialog.close()
+}
 </script>

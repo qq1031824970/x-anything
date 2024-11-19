@@ -154,8 +154,8 @@ importers:
         specifier: 2.0.0-beta.3
         version: 2.0.0-beta.3(vue@3.5.12(typescript@5.6.3))
       vxe-table:
-        specifier: 4.8.13
-        version: 4.8.13(vue@3.5.12(typescript@5.6.3))
+        specifier: 4.9.0
+        version: 4.9.0(vue@3.5.12(typescript@5.6.3))
 
   libs/vite-plugins: {}
 
@@ -5762,11 +5762,11 @@ packages:
       typescript:
         optional: true
 
-  vxe-pc-ui@4.2.52:
-    resolution: {integrity: sha512-WRp5CZnuscV8iar1IcMd4wiaWYCNI8yGBU+33Fq984MgSDZdV23YH+hHfY0LikXbszETJf31Ouo4Cfoz1Q3HjQ==}
+  vxe-pc-ui@4.3.0:
+    resolution: {integrity: sha512-XL1i08eHaEfGn4sCIZ3sUOkHSCX/d35m0bD/7tDSdMK4RioTMyFtydOSuSoUtf3e/d6ne568S0wzyG3gl+tHEg==}
 
-  vxe-table@4.8.13:
-    resolution: {integrity: sha512-ZDWrvnAIOd7NzsI9jFXLp0tElDzQOaxwZ9x1C8fcpjjiqzYcojFuzHY9/lakJFNypScnpFu9Of9B+9oS5dMBTQ==}
+  vxe-table@4.9.0:
+    resolution: {integrity: sha512-4ptpgwKFEtYSYesyU85UXCs0bRNfF8BFcJrPFv6hbpos1x0Krdm/dNc1o7JPQROj2X8AbPDaqmKiDKGfY7GoXw==}
 
   w3c-xmlserializer@5.0.0:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
@@ -12160,15 +12160,15 @@ snapshots:
     optionalDependencies:
       typescript: 5.6.3
 
-  vxe-pc-ui@4.2.52(vue@3.5.12(typescript@5.6.3)):
+  vxe-pc-ui@4.3.0(vue@3.5.12(typescript@5.6.3)):
     dependencies:
       '@vxe-ui/core': 4.0.16(vue@3.5.12(typescript@5.6.3))
     transitivePeerDependencies:
       - vue
 
-  vxe-table@4.8.13(vue@3.5.12(typescript@5.6.3)):
+  vxe-table@4.9.0(vue@3.5.12(typescript@5.6.3)):
     dependencies:
-      vxe-pc-ui: 4.2.52(vue@3.5.12(typescript@5.6.3))
+      vxe-pc-ui: 4.3.0(vue@3.5.12(typescript@5.6.3))
     transitivePeerDependencies:
       - vue
 
