@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/qq1031824970/x-anything/compare/v0.0.8...v0.0.9) (2024-11-21)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* useVxeTable 不再传入列配置，直接监听内部响应式数据 ([2955d1f](https://github.com/qq1031824970/x-anything/commit/2955d1fc649c74daef903344e964454de89def59))by.@xyl
+
 ## [0.0.8](https://github.com/qq1031824970/x-anything/compare/v0.0.7...v0.0.8) (2024-11-19)
 
 ### ✨ Features | 新功能
