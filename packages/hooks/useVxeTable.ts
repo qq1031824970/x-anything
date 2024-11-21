@@ -5,11 +5,11 @@ import useEventListener from './useEventListener'
 interface UseVxeTableParams {
   sticky?: boolean
   virtualSticky?: boolean
-  columns?: Ref<any[] | undefined>
+  colSticky?: boolean
 }
 
 export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
-  const { sticky, virtualSticky, columns } = options || {}
+  const { sticky, virtualSticky, colSticky } = options || {}
 
   if (sticky || virtualSticky) {
     const scrollbar = document.createElement('div')
@@ -201,7 +201,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       gridRef.value?.scrollTo(null, -distanceToTop)
     }
 
-    watch(() => gridRef.value?.data, () => setTimeout(virtualScroll))
     useEventListener(window, 'scroll', virtualScroll)
 
     onMounted(() => {
@@ -209,9 +208,21 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       setParentElementSticky()
       setObserver()
     })
+
+    // scrollRestoration影响到虚拟滚动，干掉
+    let scrollRestoration: 'auto' | 'manual'
+    if ('scrollRestoration' in history) {
+      scrollRestoration = history.scrollRestoration
+      history.scrollRestoration = 'manual';
+    }
+    onUnmounted(() => {
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = scrollRestoration;
+      }
+    })
   }
 
-  if (columns?.value?.length) {
+  if (colSticky) {
     let _fixedColumns = {} as Record<string, {
       fixed?: 'left' | 'right',
       className?: Record<string, boolean>
@@ -222,6 +233,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
 
     let gridElement: HTMLElement | null = null
     const tableBodyWrapper = ref<HTMLElement | void>()
+    let _scrollbarWidth = 0
 
     function setStyle() {
       if (!gridElement) return
@@ -266,6 +278,9 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
           position: sticky;
           right: 0;
           background-color: var(--vxe-ui-table-header-background-color);
+        }
+        .vxe-header--column .vxe-resizable {
+          z-index: initial;
         }
       `
       document.head.appendChild(style)
@@ -320,7 +335,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
     }
 
 
-    function initBorderColumnClassName(columns: any[]) {
+    function initBorderColumnClassName(columns: any[] = []) {
       let lastFixedLeft = null;
       for (let i = columns.length - 1; i >= 0; i--) {
         if (columns[i].fixed === 'left') {
@@ -371,7 +386,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       }
     }
 
-    function initColumnsFixed(columns: any[]) {
+    function initColumnsFixed(columns: any[] = []) {
       columns.forEach(item => {
         const { fixed, children } = item
         const columnId = getColumnId(item)
@@ -479,13 +494,34 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
           if (fixed === 'right') {
             if (!virtualSticky && tableBodyWrapper.value) {
               // 如果没开页面虚拟滚动表头会有右边一块 // 也要等data加载了看有没有滚动条再调用一次
-              headerGutterWidth = tableBodyWrapper.value.offsetWidth - tableBodyWrapper.value.clientWidth
+              headerGutterWidth = _scrollbarWidth
             }
           }
           ths[0].classList.add(...Object.keys(className || {}))
           ths[0].style[fixed!] = `${(_fixedColumns[key][fixed!] || 0) + headerGutterWidth}px`
         }
       })
+    }
+
+    // 有时候表格是被隐藏的，所以得专门获取滚动条宽度
+    function getScrollbarWidth() {
+      // 创建一个带滚动条的 div
+      const scrollDiv = document.createElement("div");
+      scrollDiv.style.width = "100px";
+      scrollDiv.style.height = "100px";
+      scrollDiv.style.overflow = "scroll";
+      scrollDiv.style.position = "absolute";
+      scrollDiv.style.top = "-9999px"; // 隐藏在视图外
+
+      document.body.appendChild(scrollDiv);
+
+      // 计算滚动条宽度
+      const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+
+      // 移除临时元素
+      document.body.removeChild(scrollDiv);
+
+      _scrollbarWidth = scrollbarWidth;
     }
 
     function setBodyCellClassNameAndLeftOrRight() {
@@ -500,7 +536,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         }
       })
     }
-
 
     function clearCellClassNameAndLeftOrRight() {
       Object.keys(_fixedColumns).forEach((key) => {
@@ -527,7 +562,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
           for (const entry of entries) {
             const { width } = entry.contentRect
             if (width) {
-              setHeaderCellClassNameAndLeftOrRight()
               setFixedClass()
             }
           }
@@ -548,6 +582,31 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       }
     }
 
+    const init = () => {
+      if (!gridRef.value) return
+      getScrollbarWidth()
+      getElements()
+      setStyle() // 需要在getElements之后
+    }
+
+    watch(() => gridRef.value, () => init())
+
+    watch(() => gridRef.value?.columns, () => {
+      clearCellClassNameAndLeftOrRight()
+      _fixedColumns = {}
+      initBorderColumnClassName(gridRef.value?.columns || [])
+      initColumnsFixed(gridRef.value?.columns || [])
+      setTimeout(() => {
+        const { collectColumn } = gridRef.value?.getTableColumn()
+        setFixedColumnsClassNameAndRenderWidth(collectColumn)
+        setColumnsLeftOrRight(collectColumn)
+        setHeaderCellClassNameAndLeftOrRight()
+        setBodyCellClassNameAndLeftOrRight()
+        setFixedClass()
+      })
+      observer()
+    })
+
     watch(() => gridRef.value?.data, () => {
       setTimeout(() => {
         setHeaderCellClassNameAndLeftOrRight()
@@ -555,42 +614,9 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         setFixedClass()
       })
     })
-    watch(() => columns.value, () => {
-      clearCellClassNameAndLeftOrRight()
-      _fixedColumns = {}
-      initBorderColumnClassName(columns.value || [])
-      initColumnsFixed(columns.value || [])
-      setTimeout(() => {
-        const { collectColumn } = gridRef.value?.getTableColumn()
-        setFixedColumnsClassNameAndRenderWidth(collectColumn)
-        setColumnsLeftOrRight(collectColumn)
-        setHeaderCellClassNameAndLeftOrRight()
-        setBodyCellClassNameAndLeftOrRight()
-        setFixedClass()
-      })
-    })
-    watch(() => gridRef.value, () => {
-      init()
-    })
-
-    const init = () => {
-      if (!gridRef.value) return
-      getElements()
-      setStyle() // 需要在getElements之后
-      setTimeout(() => {
-        const { collectColumn } = gridRef.value?.getTableColumn()
-        setFixedColumnsClassNameAndRenderWidth(collectColumn)
-        setColumnsLeftOrRight(collectColumn)
-        setHeaderCellClassNameAndLeftOrRight()
-        setBodyCellClassNameAndLeftOrRight()
-      });
-      observer()
-      setTimeout(setFixedClass);
-    }
 
     useEventListener(tableBodyWrapper, 'scroll', setFixedClass)
-    initBorderColumnClassName(columns.value)
-    initColumnsFixed(columns.value)
+
     onUnmounted(() => {
       removeStyle()
     })
@@ -601,5 +627,5 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
     }
   }
 
-  return { columns: [] }
+  return {}
 }

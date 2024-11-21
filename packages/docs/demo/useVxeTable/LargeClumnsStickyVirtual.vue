@@ -444,7 +444,7 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
 
 const gridRef = ref()
 const { resizableChange, cellStyle } = useVxeTable(gridRef, {
-  columns: toRef(gridOptions, 'columns'),
+  colSticky: true,
 })
 gridOptions.cellStyle = cellStyle
 

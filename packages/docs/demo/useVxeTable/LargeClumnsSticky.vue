@@ -444,7 +444,7 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
 
 const gridRef = ref()
 const { resizableChange } = useVxeTable(gridRef, {
-  columns: toRef(gridOptions, 'columns'),
+  colSticky: true,
 })
 
 // 模拟行数据

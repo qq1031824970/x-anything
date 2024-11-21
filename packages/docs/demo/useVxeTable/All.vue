@@ -4,19 +4,21 @@
     <x-button @click="loadData(10000)">加载1w条</x-button>
     <x-button @click="loadData(30000)">加载3w条</x-button>
 
-    <div style="width: 100%">
-      <vxe-grid
-        class="top-64"
-        ref="gridRef"
-        v-bind="gridOptions"
-        @resizable-change="resizableChange"
-      >
-        <template #buttonSlot>
-          <x-tooltip title="tooltip">
-            <x-button>按钮</x-button>
-          </x-tooltip>
-        </template>
-      </vxe-grid>
+    <div>
+      <div>
+        <vxe-grid
+          class="top-64"
+          ref="gridRef"
+          v-bind="gridOptions"
+          @resizable-change="resizableChange"
+        >
+          <template #buttonSlot>
+            <x-tooltip title="tooltip">
+              <x-button>按钮</x-button>
+            </x-tooltip>
+          </template>
+        </vxe-grid>
+      </div>
     </div>
   </div>
 </template>
@@ -440,7 +442,7 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
 const gridRef = ref()
 const { resizableChange, cellStyle } = useVxeTable(gridRef, {
   virtualSticky: true,
-  columns: toRef(gridOptions, 'columns'),
+  colSticky: true,
 })
 gridOptions.cellStyle = cellStyle
 
