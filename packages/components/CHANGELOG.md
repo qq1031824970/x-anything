@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/qq1031824970/x-anything/compare/v0.0.10...v0.0.11) (2024-11-28)
+
+**Note:** Version bump only for package @x-anything/components
+
 ## [0.0.10](https://github.com/qq1031824970/x-anything/compare/v0.0.9...v0.0.10) (2024-11-22)
 
 **Note:** Version bump only for package @x-anything/components

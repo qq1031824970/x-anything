@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/qq1031824970/x-anything/compare/v0.0.10...v0.0.11) (2024-11-28)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* 表格无固定高度时不计算右侧滚动条宽度 ([9621457](https://github.com/qq1031824970/x-anything/commit/96214577c051d3eb14780aaf748e1ef9edac724b))by.@xyl
+
 ## [0.0.10](https://github.com/qq1031824970/x-anything/compare/v0.0.9...v0.0.10) (2024-11-22)
 
 **Note:** Version bump only for package @x-anything/hooks
