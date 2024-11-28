@@ -512,7 +512,7 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         if (ths && ths.length) {
           let headerGutterWidth = 0
           if (fixed === 'right') {
-            if (!virtualSticky && tableBodyWrapper.value) {
+            if (!sticky && !virtualSticky && tableBodyWrapper.value) {
               // 如果没开页面虚拟滚动表头会有右边一块 // 也要等data加载了看有没有滚动条再调用一次
               headerGutterWidth = _scrollbarWidth
             }
