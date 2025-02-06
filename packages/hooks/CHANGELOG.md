@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/qq1031824970/x-anything/compare/v0.0.11...v0.0.12) (2025-02-06)
+
+### ✨ Features | 新功能
+
+* useVxeTable 添加手动轮询 ([544bdc2](https://github.com/qq1031824970/x-anything/commit/544bdc2022bb3085998ad9b81199b200cb8102e2))by.@xyl
+
 ## [0.0.11](https://github.com/qq1031824970/x-anything/compare/v0.0.10...v0.0.11) (2024-11-28)
 
 ### 🐛 Bug Fixes | Bug 修复
