@@ -131,11 +131,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
     useEventListener(scrollbar, 'scroll', barScroll)
     useEventListener(tableBodyWrapper, 'scroll', tableBodyScroll)
 
-    function removeStyle() {
-      const style = document.getElementById('x-vxe-table-style')
-      style && style.remove()
-    }
-
     onMounted(() => {
       getElements()
       setStyle() // 需在getElements后
@@ -143,7 +138,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
       setObserver()
     })
     onUnmounted(() => {
-      removeStyle()
       resizeObserver && resizeObserver.disconnect()
     })
   }
@@ -292,11 +286,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
         }
       `
       document.head.appendChild(style)
-    }
-
-    function removeStyle() {
-      const style = document.getElementById('x-vxe-columns-sticky-style')
-      style && style.remove()
     }
 
     const resizableChange = ({ column }: any) => {
@@ -652,10 +641,6 @@ export default function (gridRef: Ref<any>, options: UseVxeTableParams) {
     )
 
     useEventListener(tableBodyWrapper, 'scroll', setFixedClass)
-
-    onUnmounted(() => {
-      removeStyle()
-    })
 
     return {
       resizableChange,
